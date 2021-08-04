@@ -26,10 +26,12 @@ app.get("/", (req, res) =>
 app.use("/api", userRouter);
 app.use("/api", roomRouter);
 
+// upload a room image and use its filename to save in a room document
 app.post("/api/upload/image", upload.single("file"), (req, res) =>
   res.status(201).json(req.file)
 );
 
+// fetch a room image
 app.get("/api/image", async (req, res) => {
   gfs.find({ filename: req.query.name }).toArray((error, files) => {
     if (error) {

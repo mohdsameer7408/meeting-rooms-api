@@ -6,6 +6,7 @@ import generateToken from "../config/generateToken.js";
 
 const router = Router();
 
+// Sign Up for new user
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
 
@@ -36,6 +37,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// login to use the app
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 

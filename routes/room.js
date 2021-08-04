@@ -5,6 +5,7 @@ import verifyToken from "../config/verifyToken.js";
 
 const router = Router();
 
+// this route will fetch all the rooms
 router.get("/rooms", async (req, res) => {
   try {
     const rooms = await Room.find();
@@ -14,6 +15,7 @@ router.get("/rooms", async (req, res) => {
   }
 });
 
+// gets all the rooms which are available for booking
 router.get("/rooms/available", async (req, res) => {
   try {
     const rooms = await Room.find({ isAvailable: "true" });
@@ -23,6 +25,7 @@ router.get("/rooms/available", async (req, res) => {
   }
 });
 
+// Creates a new Room
 router.post("/room/add", verifyToken, async (req, res) => {
   try {
     const room = new Room({ ...req.body, isAvailable: "true" });
@@ -33,6 +36,7 @@ router.post("/room/add", verifyToken, async (req, res) => {
   }
 });
 
+// books a room
 router.patch("/bookRoom/:roomId", verifyToken, async (req, res) => {
   const { roomId } = req.params;
   try {
@@ -47,6 +51,7 @@ router.patch("/bookRoom/:roomId", verifyToken, async (req, res) => {
   }
 });
 
+// checks out from the room
 router.patch("/leaveRoom/:roomId", verifyToken, async (req, res) => {
   const { roomId } = req.params;
   const user = req.user._id;
