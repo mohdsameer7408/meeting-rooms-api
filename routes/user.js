@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 import User from "../models/User.js";
 import generateToken from "../config/generateToken.js";
+import verifyToken from "../config/verifyToken.js";
 
 const router = Router();
 
@@ -61,6 +62,19 @@ router.post("/login", async (req, res) => {
       _id: doesUserExists._id,
       email: doesUserExists.email,
       token,
+    });
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
+router.get("/user/autoLogin", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.status(200).json({
+      _id: user._id,
+      email: user.email,
+      token: req.header("auth-token"),
     });
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);
