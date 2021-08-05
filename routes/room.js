@@ -42,7 +42,7 @@ router.patch("/bookRoom/:roomId", verifyToken, async (req, res) => {
   try {
     const room = await Room.findOneAndUpdate(
       { _id: roomId },
-      { isAvailable: "false", bookedTo: req.user._id },
+      { isAvailable: "false", bookedTo: req.user._id, dateTime: Date.now() },
       { new: true, useFindAndModify: false }
     );
     res.status(200).json(room);
