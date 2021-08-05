@@ -63,6 +63,7 @@ router.patch("/leaveRoom/:roomId", verifyToken, async (req, res) => {
 
     room.isAvailable = "true";
     room.bookedTo = null;
+    room.dateTime = Date.now();
     const updatedRoom = await room.save();
     res.status(200).json(updatedRoom);
   } catch (error) {
