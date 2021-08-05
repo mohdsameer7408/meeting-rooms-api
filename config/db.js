@@ -73,6 +73,28 @@ const connectDB = async () => {
         console.log("A Strange operation was triggered!");
       }
     });
+
+    const bookingsChangeStream = mongoose.connection
+      .collection("bookings")
+      .watch();
+    bookingsChangeStream.on("change", (change) => {
+      console.log("Change stream triggered!");
+      console.log(change);
+
+      if (change.operationType === "insert") {
+        const data = change.fullDocument;
+        console.log("A booking was Created!");
+        pusher.trigger("bookings", "inserted", data);
+      } else if (
+        change.operationType === "update" ||
+        change.operationType === "delete"
+      ) {
+        console.log("A booking was Updated or Deleted!");
+        pusher.trigger("bookings", "inserted", {});
+      } else {
+        console.log("A Strange operation was triggered!");
+      }
+    });
   } catch (error) {
     console.log(`An error occured while connecting to mongoDB: ${error}`);
   }

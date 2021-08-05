@@ -23,6 +23,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await generateHashedPassword(password);
     const user = new User({
       ...req.body,
+      userType: "user",
       password: hashedPassword,
     });
 
@@ -31,6 +32,7 @@ router.post("/register", async (req, res) => {
     res.status(201).header("auth-token", token).json({
       _id: createdUser._id,
       email: createdUser.email,
+      userType: createdUser.userType,
       token,
     });
   } catch (error) {
@@ -61,6 +63,7 @@ router.post("/login", async (req, res) => {
     res.status(200).header("auth-token", token).json({
       _id: doesUserExists._id,
       email: doesUserExists.email,
+      userType: doesUserExists.userType,
       token,
     });
   } catch (error) {
@@ -74,6 +77,7 @@ router.get("/user/autoLogin", verifyToken, async (req, res) => {
     res.status(200).json({
       _id: user._id,
       email: user.email,
+      userType: user.userType,
       token: req.header("auth-token"),
     });
   } catch (error) {

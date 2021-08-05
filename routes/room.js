@@ -28,9 +28,43 @@ router.get("/rooms/available", async (req, res) => {
 // Creates a new Room
 router.post("/room/add", verifyToken, async (req, res) => {
   try {
-    const room = new Room({ ...req.body, isAvailable: "true" });
+    if (req.user.userType === "admin")
+      return res.status(400).json("You are not authorized to add a room!");
+
+    const room = new Room({ ...req.body });
     const createdRoom = await room.save();
     res.status(201).json(createdRoom);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
+router.patch("/room/update/:roomId", verifyToken, async (req, res) => {
+  try {
+    if (req.user.userType === "admin")
+      return res.status(400).json("You are not authorized to add a room!");
+
+    const room = await Room.findOneAndUpdate(
+      { _id: req.params.roomId },
+      req.body,
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    res.status(200).json(room);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
+router.delete("/room/update/:roomId", verifyToken, async (req, res) => {
+  try {
+    if (req.user.userType === "admin")
+      return res.status(400).json("You are not authorized to add a room!");
+
+    const room = await Room.findOneAndDelete({ _id: req.params.roomId });
+    res.status(200).json(room);
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);
   }
@@ -42,7 +76,7 @@ router.patch("/bookRoom/:roomId", verifyToken, async (req, res) => {
   try {
     const room = await Room.findOneAndUpdate(
       { _id: roomId },
-      { isAvailable: "false", bookedTo: req.user._id, dateTime: Date.now() },
+      { isAvailable: "false", bookedTo: req.user._id },
       { new: true, useFindAndModify: false }
     );
     res.status(200).json(room);
@@ -63,7 +97,6 @@ router.patch("/leaveRoom/:roomId", verifyToken, async (req, res) => {
 
     room.isAvailable = "true";
     room.bookedTo = null;
-    room.dateTime = Date.now();
     const updatedRoom = await room.save();
     res.status(200).json(updatedRoom);
   } catch (error) {

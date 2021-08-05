@@ -7,11 +7,10 @@ const schemaOptions = {
 
 const roomSchema = new mongoose.Schema(
   {
-    roomNo: schemaOptions,
-    isAvailable: schemaOptions,
-    dateTime: { ...schemaOptions, type: Date, default: Date.now() },
+    name: schemaOptions,
+    description: schemaOptions,
+    dateTime: schemaOptions,
     imageUrl: schemaOptions,
-    bookedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

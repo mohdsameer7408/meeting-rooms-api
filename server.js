@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectDB, { gfs, upload } from "./config/db.js";
 import userRouter from "./routes/user.js";
 import roomRouter from "./routes/room.js";
+import bookingRouter from "./routes/booking.js";
 
 // configurations
 dotenv.config({ path: "./config/config.env" });
@@ -25,6 +26,7 @@ app.get("/", (req, res) =>
 
 app.use("/api", userRouter);
 app.use("/api", roomRouter);
+app.use("/api", bookingRouter);
 
 // upload a room image and use its filename to save in a room document
 app.post("/api/upload/image", upload.single("file"), (req, res) =>
