@@ -1,7 +1,7 @@
 {
   "name": "meeting-rooms",
   "version": "1.0.0",
-  "description": "Meeting room system",
+  "description": "Meeting rooms system",
   "type": "module",
   "main": "server.js",
   "repository": "https://github.com/mohdsameer7408/meeting-rooms-api.git",
