@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import GridFsStorage from "multer-gridfs-storage";
+import { GridFsStorage } from "multer-gridfs-storage";
 import multer from "multer";
 import path from "path";
 import Pusher from "pusher";
