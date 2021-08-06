@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
     const token = generateToken(createdUser);
     res.status(201).header("auth-token", token).json({
       _id: createdUser._id,
+      name: createdUser.name,
       email: createdUser.email,
       userType: createdUser.userType,
       token,
@@ -62,6 +63,7 @@ router.post("/login", async (req, res) => {
     const token = generateToken(doesUserExists);
     res.status(200).header("auth-token", token).json({
       _id: doesUserExists._id,
+      name: doesUserExists.name,
       email: doesUserExists.email,
       userType: doesUserExists.userType,
       token,
@@ -76,6 +78,7 @@ router.get("/user/autoLogin", verifyToken, async (req, res) => {
     const user = await User.findById(req.user._id);
     res.status(200).json({
       _id: user._id,
+      name: user.name,
       email: user.email,
       userType: user.userType,
       token: req.header("auth-token"),
