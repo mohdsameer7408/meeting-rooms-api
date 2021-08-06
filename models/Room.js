@@ -9,7 +9,7 @@ const roomSchema = new mongoose.Schema(
   {
     name: schemaOptions,
     description: schemaOptions,
-    dateTime: schemaOptions,
+    time: schemaOptions,
     imageUrl: schemaOptions,
   },
   { timestamps: true }
