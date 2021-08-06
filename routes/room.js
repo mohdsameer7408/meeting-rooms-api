@@ -28,7 +28,7 @@ router.get("/rooms/available", async (req, res) => {
 // Creates a new Room
 router.post("/room/add", verifyToken, async (req, res) => {
   try {
-    if (req.user.userType === "admin")
+    if (req.user.userType !== "admin")
       return res.status(400).json("You are not authorized to add a room!");
 
     const room = new Room({ ...req.body });
@@ -41,7 +41,7 @@ router.post("/room/add", verifyToken, async (req, res) => {
 
 router.patch("/room/update/:roomId", verifyToken, async (req, res) => {
   try {
-    if (req.user.userType === "admin")
+    if (req.user.userType !== "admin")
       return res.status(400).json("You are not authorized to add a room!");
 
     const room = await Room.findOneAndUpdate(
@@ -60,7 +60,7 @@ router.patch("/room/update/:roomId", verifyToken, async (req, res) => {
 
 router.delete("/room/update/:roomId", verifyToken, async (req, res) => {
   try {
-    if (req.user.userType === "admin")
+    if (req.user.userType !== "admin")
       return res.status(400).json("You are not authorized to add a room!");
 
     const room = await Room.findOneAndDelete({ _id: req.params.roomId });
